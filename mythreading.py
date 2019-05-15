@@ -76,16 +76,21 @@ def logs_scanner(node_list):
     :return:
     """
     global report_list
-    log_file_path = os.path.join(dir_path, "mylog.log")
-    fk = Faker()
-    for node in node_list:
-        result = {
-            "name": fk.name(),
-            "node": node,
-            "address": fk.address(),
-            "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
-        }
-        report_list.append(result)
+    try:
+        log_file_path = os.path.join(dir_path, "mylog.log")
+
+        fk = Faker()
+        for node in node_list:
+            result = {
+                "name": fk.name(),
+                "node": node,
+                "address": fk.address(),
+                "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
+            }
+            report_list.append(result)
+    except Exception as e:
+        logging.error("Exception {}".format(e))
+        raise
 
 
 def thread_handler():
