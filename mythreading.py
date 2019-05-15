@@ -1,5 +1,6 @@
 from multiprocessing import Process
 import os
+import time
 import logging
 import threading
 from faker import Faker
@@ -34,15 +35,15 @@ report_list = []
 
 def generate_csv(input_data):
     """
-    Generate csv report form list of dict
+    Generate csv reports form list of dict
     :param input_data:
     :return: None
     """
 
-    report_name = os.path.join(dir_path, datetime.now().strftime('report_%d_%m_%Y_%H_%M.csv'))
+    report_name = os.path.join(dir_path, "reports", datetime.now().strftime('report_%d_%m_%Y_%H_%M.csv'))
 
     with open(report_name, 'wb') as output_file:
-        dict_writer = csv.DictWriter(output_file, fieldnames=input_data[0].keys())
+        dict_writer = csv.DictWriter(output_file, fieldnames=["node", "name", "address", "log"])
         dict_writer.writeheader()
         for data in input_data:
             dict_writer.writerow(data)
@@ -59,6 +60,7 @@ def find_in_log_file(search_text, log_file):
     :return: Boolean
     """
     try:
+        logging.info("Reading log file")
         with open(log_file) as _file:
             contents = _file.read()
             if search_text in contents:
@@ -71,26 +73,23 @@ def find_in_log_file(search_text, log_file):
         raise
 
 
-def logs_scanner(node_list):
+def logs_scanner(node):
     """
 
-    :param node_list:
+    :param node:
     :return:
     """
     global report_list
     try:
         log_file_path = os.path.join(dir_path, "mylog.log")
-
-        # fk = Faker()
-        for node in node_list:
-            result = {
-                "name": "fk.name()",
-                "node": node,
-                "address": "fk.address()",
-                "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
-            }
-            print result
-            report_list.append(result)
+        fk = Faker("en_US")
+        result = {
+            "name": fk.name(),
+            "node": node,
+            "address": fk.address(),
+            "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
+        }
+        report_list.append(result)
     except Exception as e:
         logging.error("Exception {}".format(e))
         raise
@@ -101,11 +100,12 @@ def thread_handler():
     Thread Handler
     :return:
     """
-    node_details = ["172.10.152." + str(x) for x in range(10,20)]
-
+    start_time = int(time.time())
+    node_details = ["172.10.152." + str(x) for x in range(10, 100)]
+    global report_list
     local_threads = []
+
     for node_detail in node_details:
-        print "Thread started"
         _thread = threading.Thread(
             target=logs_scanner,
             args=(node_detail,)
@@ -117,6 +117,11 @@ def thread_handler():
 
     for _thread in local_threads:
         _thread.join()
+
+    generate_csv(report_list)
+    end_time = int(time.time())
+    total_time = end_time - start_time
+    logging.info("Total Time Taken {}".format(total_time))
 
 
 if __name__ == "__main__":
