@@ -1,0 +1,22 @@
+[Fri Apr 26 14:13:07 GMT 2019] [DEBUG]  > network SCRIPTENTRY
+[Fri Apr 26 14:13:07 GMT 2019] [INFO] Info
+[Fri Apr 26 14:13:07 GMT 2019] [INFO]  Successfully copied Scripts/ifcfg-em1 file to location /etc/sysconfig/network-scripts/ifcfg-em1
+[Fri Apr 26 14:13:07 GMT 2019] [INFO]  Successfully copied Scripts/ifcfg-em2 file to location /etc/sysconfig/network-scripts/ifcfg-em2
+[Fri Apr 26 14:13:07 GMT 2019] [DEBUG]  < network SCRIPTEXIT
+[Fri Apr 26 14:13:28 GMT 2019] [DEBUG]  > kernel_upgrade SCRIPTENTRY
+[Fri Apr 26 14:13:34 GMT 2019] [INFO]  Current kernel version is kernel-3.10.0-957.el7.x86_64, Expected kernel version is kernel-3.10.0-957.1.3.el7.x86_64
+[Fri Apr 26 14:13:34 GMT 2019] [INFO]  Starting Kernel upgrade...
+[Fri Apr 26 14:13:34 GMT 2019] [INFO]  Downloading required kernel version...
+[Fri Apr 26 14:14:17 GMT 2019] [INFO]  Upgrading kernel version kernel-3.10.0-957.1.3.el7.x86_64
+[Fri Apr 26 14:14:56 GMT 2019] [INFO]  kernel-3.10.0-957.1.3.el7.x86_64 upgraded successfully
+[Fri Apr 26 14:14:56 GMT 2019] [DEBUG]  < kernel_upgrade SCRIPTEXIT
+[Fri Apr 26 14:20:28 GMT 2019] [DEBUG]  > install_ntp SCRIPTENTRY
+[Fri Apr 26 14:20:28 UTC 2019] [INFO]  Timezone : UTC
+[Fri Apr 26 14:20:28 UTC 2019] [INFO]  Stop chronyd
+[Fri Apr 26 14:20:28 UTC 2019] [INFO]  Installing ntp ....
+[Fri Apr 26 14:21:12 UTC 2019] [INFO]  Successfully installed ntp package
+[Fri Apr 26 14:21:12 UTC 2019] [INFO]  private NTP server is not given, So we will use NTP from internet
+[Fri Apr 26 14:21:12 UTC 2019] [INFO]  Start Ntp service
+[Fri Apr 26 14:21:22 UTC 2019] [INFO]  Ntpd setup successfully completed
+[Fri Apr 26 14:21:22 UTC 2019] [DEBUG]  < install_ntp SCRIPTEXIT
+[Fri Apr 26 14:22:08 UTC 2019] [DEBUG]  > hdpPrerequisite SCRIPTENTRY
