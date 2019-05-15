@@ -7,12 +7,15 @@ import csv
 
 from datetime import datetime
 
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 # set up logging to file - see previous section for more details
 log_file_name = datetime.now().strftime('multi_threading_processing_%d_%m_%Y_%H_%M.log')
 logging.basicConfig(level=logging.DEBUG,
                     format='%(relativeCreated)6d %(threadName)s %(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='/root/mycode/threading{}'.format(log_file_name),
+                    filename=os.path.join(dir_path, log_file_name),
                     filemode='a')
 # define a Handler which writes INFO messages or higher to the sys.stderr
 console = logging.StreamHandler()
@@ -24,8 +27,6 @@ console.setFormatter(formatter)
 # add the handler to the root logger
 logging.getLogger('').addHandler(console)
 
-
-dir_path = os.path.dirname(os.path.realpath(__file__))
 
 global report_list
 report_list = []
