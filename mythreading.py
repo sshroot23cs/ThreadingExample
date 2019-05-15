@@ -15,7 +15,7 @@ log_file_name = datetime.now().strftime('multi_threading_processing_%d_%m_%Y_%H_
 logging.basicConfig(level=logging.DEBUG,
                     format='%(relativeCreated)6d %(threadName)s %(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename=os.path.join(dir_path, log_file_name),
+                    filename=os.path.join(dir_path, "logs", log_file_name),
                     filemode='a')
 # define a Handler which writes INFO messages or higher to the sys.stderr
 console = logging.StreamHandler()
@@ -66,7 +66,9 @@ def find_in_log_file(search_text, log_file):
             else:
                 return False
     except Exception as e:
+        print e
         logging.error("Error in reading log file".format(e))
+        raise
 
 
 def logs_scanner(node_list):
@@ -79,14 +81,15 @@ def logs_scanner(node_list):
     try:
         log_file_path = os.path.join(dir_path, "mylog.log")
 
-        fk = Faker()
+        # fk = Faker()
         for node in node_list:
             result = {
-                "name": fk.name(),
+                "name": "fk.name()",
                 "node": node,
-                "address": fk.address(),
+                "address": "fk.address()",
                 "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
             }
+            print result
             report_list.append(result)
     except Exception as e:
         logging.error("Exception {}".format(e))
@@ -102,6 +105,7 @@ def thread_handler():
 
     local_threads = []
     for node_detail in node_details:
+        print "Thread started"
         _thread = threading.Thread(
             target=logs_scanner,
             args=(node_detail,)
