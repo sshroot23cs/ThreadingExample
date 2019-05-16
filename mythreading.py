@@ -29,10 +29,6 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 
 
-global report_list
-report_list = []
-
-
 def generate_csv(input_data):
     """
     Generate csv reports form list of dict
@@ -81,7 +77,7 @@ def logs_scanner(node):
     :param node:
     :return:
     """
-    global report_list
+    report_list = []
     try:
         logging.info("OS process id: {}".format(os.getpid()))
         log_file_path = os.path.join(dir_path, "mylog.log")
@@ -94,6 +90,7 @@ def logs_scanner(node):
             "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
         }
         report_list.append(result)
+        generate_csv(report_list)
     except Exception as e:
         logging.error("Exception {}".format(e))
         raise
@@ -107,8 +104,7 @@ def thread_handler():
 
     logging.info("Multi Threading section started")
     start_time = int(time.time())
-    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
-    # global report_list
+    node_details = ["172.10.152." + str(x) for x in range(10, 100)]
     local_threads = []
 
     for node_detail in node_details:
@@ -137,8 +133,7 @@ def multi_processing_handler():
     """
     logging.info("Multi Processing section started")
     start_time = int(time.time())
-    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
-    global report_list
+    node_details = ["172.10.152." + str(x) for x in range(10, 100)]
     local_threads = []
 
     for node_detail in node_details:
@@ -154,7 +149,7 @@ def multi_processing_handler():
     for _thread in local_threads:
         _thread.join()
 
-    generate_csv(report_list)
+    # generate_csv(report_list)
     end_time = int(time.time())
     total_time = end_time - start_time
     logging.info("Multi Processing Total Time Taken {}".format(total_time))
