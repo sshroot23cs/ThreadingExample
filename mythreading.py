@@ -104,7 +104,7 @@ def thread_handler():
 
     logging.info("Multi Threading section started")
     start_time = int(time.time())
-    node_details = ["172.10.152." + str(x) for x in range(10, 500)]
+    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
     local_threads = []
 
     for node_detail in node_details:
@@ -133,7 +133,7 @@ def multi_processing_handler():
     """
     logging.info("Multi Processing section started")
     start_time = int(time.time())
-    node_details = ["172.10.152." + str(x) for x in range(10, 500)]
+    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
     local_threads = []
 
     for node_detail in node_details:
@@ -159,12 +159,12 @@ if __name__ == "__main__":
     t_start_time = int(time.time())
     thread_handler()
     t_end_time = int(time.time())
-    total_time = t_end_time - t_start_time
+    t_total_time = t_end_time - t_start_time
 
     p_start_time = int(time.time())
     multi_processing_handler()
     p_end_time = int(time.time())
     p_total_time = p_end_time - p_start_time
 
-    logging.info("Multi Threading Total Time Taken {}".format(total_time))
+    logging.info("Multi Threading Total Time Taken {}".format(t_total_time))
     logging.info("Multi Processing Total Time Taken {}".format(p_total_time))
