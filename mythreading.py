@@ -71,6 +71,8 @@ def find_in_log_file(search_text, log_file):
         print e
         logging.error("Error in reading log file".format(e))
         raise
+    finally:
+        pass
 
 
 def logs_scanner(node):
@@ -81,12 +83,14 @@ def logs_scanner(node):
     """
     global report_list
     try:
+        logging.info("OS process id: {}".format(os.getpid()))
         log_file_path = os.path.join(dir_path, "mylog.log")
         fk = Faker("en_US")
         result = {
             "name": fk.name(),
             "node": node,
             "address": fk.address(),
+            # "log": "log"
             "log": "Found" if find_in_log_file("network SCRIPTENTRY", log_file_path) else "Not Found"
         }
         report_list.append(result)
@@ -101,8 +105,8 @@ def thread_handler():
     :return:
     """
     start_time = int(time.time())
-    node_details = ["172.10.152." + str(x) for x in range(10, 100)]
-    global report_list
+    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
+    # global report_list
     local_threads = []
 
     for node_detail in node_details:
@@ -118,12 +122,43 @@ def thread_handler():
     for _thread in local_threads:
         _thread.join()
 
+    # generate_csv(report_list)
+    end_time = int(time.time())
+    total_time = end_time - start_time
+    logging.info("Threading Total Time Taken {}".format(total_time))
+
+
+def multi_processing_handler():
+    """
+
+    :return:
+    """
+
+    start_time = int(time.time())
+    node_details = ["172.10.152." + str(x) for x in range(10, 15)]
+    global report_list
+    local_threads = []
+
+    for node_detail in node_details:
+        _thread = Process(
+            target=logs_scanner,
+            args=(node_detail,)
+        )
+        local_threads.append(_thread)
+
+    for _thread in local_threads:
+        _thread.start()
+
+    for _thread in local_threads:
+        _thread.join()
+
     generate_csv(report_list)
     end_time = int(time.time())
     total_time = end_time - start_time
-    logging.info("Total Time Taken {}".format(total_time))
+    logging.info("Multi Processing Total Time Taken {}".format(total_time))
 
 
 if __name__ == "__main__":
 
     thread_handler()
+    multi_processing_handler()
