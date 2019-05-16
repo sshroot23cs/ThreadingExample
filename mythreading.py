@@ -104,6 +104,8 @@ def thread_handler():
     Thread Handler
     :return:
     """
+
+    logging.info("Multi Threading section started")
     start_time = int(time.time())
     node_details = ["172.10.152." + str(x) for x in range(10, 15)]
     # global report_list
@@ -133,7 +135,7 @@ def multi_processing_handler():
 
     :return:
     """
-
+    logging.info("Multi Processing section started")
     start_time = int(time.time())
     node_details = ["172.10.152." + str(x) for x in range(10, 15)]
     global report_list
